@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NetBlog.Web.Data;
+using NetBlog.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<NetBlogDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("NetBlogDbConnectionString")));
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+builder.Services.AddScoped<ITagService, TagService>();
+builder.Services.AddScoped<IBlogPostService, BlogPostsService>();
 
 var app = builder.Build();
 
