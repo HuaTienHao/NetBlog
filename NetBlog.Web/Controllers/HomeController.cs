@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NetBlog.Web.Models;
+using NetBlog.Web.Models.ViewModels;
+using NetBlog.Web.Services;
 using System.Diagnostics;
 
 namespace NetBlog.Web.Controllers
@@ -7,15 +9,27 @@ namespace NetBlog.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IBlogPostService _blogPostService;
+        private readonly ITagService _tagService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IBlogPostService blogPostService, ITagService tagService)
         {
             _logger = logger;
+            _blogPostService = blogPostService;
+            _tagService = tagService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var blogPosts = await _blogPostService.GetAllAsync();
+            var tags = await _tagService.GetAllAsync();
+            var model = new HomeViewModel
+            {
+                BlogPosts = blogPosts,
+                Tags = tags
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()

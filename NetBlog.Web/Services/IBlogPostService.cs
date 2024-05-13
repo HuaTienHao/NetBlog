@@ -9,5 +9,6 @@ namespace NetBlog.Web.Services
         Task<BlogPost> AddAsync(BlogPost blogPost);
         Task<BlogPost?> UpdateAsync(BlogPost blogPost);
         Task<BlogPost?> DeleteAsync(Guid id);
+        Task<BlogPost?> GetByUrlHandelAsync(string urlHandle); 
     }
 }

@@ -10,11 +10,14 @@ namespace NetBlog.Web
         {
             // Tag
             CreateMap<Tag, AddTagRequest>().ReverseMap();
-            CreateMap<Tag, EditTagRequest>();
-            CreateMap<EditTagRequest, Tag>().ReverseMap();
+            CreateMap<Tag, EditTagRequest>().ReverseMap();
+            //CreateMap<EditTagRequest, Tag>().ReverseMap();
 
             // BlogPost
             CreateMap<AddBlogPostRequest, BlogPost>().ForMember(dest => dest.Tags, src => src.Ignore());
+            CreateMap<BlogPost, EditBlogPostRequest>().ForMember(dest => dest.Tags, src => src.Ignore());
+            CreateMap<EditBlogPostRequest, BlogPost>().ForMember(dest => dest.Tags, src => src.Ignore());
+            CreateMap<BlogPost, BlogPost>();
         }
     }
 }

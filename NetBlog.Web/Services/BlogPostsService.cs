@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using NetBlog.Web.Data;
 using NetBlog.Web.Models.Domain;
 
@@ -7,10 +8,12 @@ namespace NetBlog.Web.Services
     public class BlogPostsService : IBlogPostService
     {
         private readonly NetBlogDbContext _netBlogDbContext;
+        private readonly IMapper _mapper;
 
-        public BlogPostsService(NetBlogDbContext netBlogDbContext)
+        public BlogPostsService(NetBlogDbContext netBlogDbContext, IMapper mapper)
         {
             _netBlogDbContext = netBlogDbContext;
+            _mapper = mapper;
         }
         public async Task<BlogPost> AddAsync(BlogPost blogPost)
         {
@@ -19,9 +22,16 @@ namespace NetBlog.Web.Services
             return blogPost;
         }
 
-        public Task<BlogPost?> DeleteAsync(Guid id)
+        public async Task<BlogPost?> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var existingBlog = await _netBlogDbContext.BlogPosts.FindAsync(id);
+            if (existingBlog != null)
+            {
+                _netBlogDbContext.BlogPosts.Remove(existingBlog);
+                await _netBlogDbContext.SaveChangesAsync();
+                return existingBlog;
+            }
+            return null;
         }
 
         public async Task<IEnumerable<BlogPost>> GetAllAsync()
@@ -29,14 +39,27 @@ namespace NetBlog.Web.Services
             return await _netBlogDbContext.BlogPosts.Include(x => x.Tags).ToListAsync();
         }
 
-        public Task<BlogPost?> GetAsync(Guid id)
+        public async Task<BlogPost?> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _netBlogDbContext.BlogPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<BlogPost?> UpdateAsync(BlogPost blogPost)
+        public async Task<BlogPost?> GetByUrlHandelAsync(string urlHandle)
         {
-            throw new NotImplementedException();
+            return await _netBlogDbContext.BlogPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+        }
+
+        public async Task<BlogPost?> UpdateAsync(BlogPost blogPost)
+        {
+            var existingBlog = await _netBlogDbContext.BlogPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == blogPost.Id);
+
+            if (existingBlog != null)
+            {
+                _mapper.Map<BlogPost, BlogPost>(blogPost, existingBlog);
+                await _netBlogDbContext.SaveChangesAsync();
+                return existingBlog;
+            }
+            return null;
         }
     }
 }

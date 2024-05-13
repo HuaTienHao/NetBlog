@@ -61,5 +61,68 @@ namespace NetBlog.Web.Controllers
 
             return View(blogPosts);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var blogPost = await _blogPostService.GetAsync(id);
+            var tagsDomainModel = await _tagService.GetAllAsync();
+
+            if (blogPost != null)
+            {
+                // Mapping
+                var model = _mapper.Map<EditBlogPostRequest>(blogPost);
+                model.Tags = tagsDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                });
+                model.SelectedTags = blogPost.Tags.Select(x => x.Id.ToString()).ToArray();
+
+                return View(model);
+            }
+
+            return View(null);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditBlogPostRequest editBlogPostRequest)
+        {
+            // Mapping
+            var blogPostDomainModel = _mapper.Map<BlogPost>(editBlogPostRequest);
+            var selectedTags = new List<Tag>();
+            foreach (var selectedtTag in editBlogPostRequest.SelectedTags)
+            {
+                if (Guid.TryParse(selectedtTag, out var tag))
+                {
+                    var foundTag = await _tagService.GetAsync(tag);
+
+                    if (foundTag != null)
+                    {
+                        selectedTags.Add(foundTag);
+                    }
+                }
+            }
+            blogPostDomainModel.Tags = selectedTags;
+            
+            var updatedBlog = await _blogPostService.UpdateAsync(blogPostDomainModel);
+            if (updatedBlog != null)
+            {
+                return RedirectToAction("Edit");
+            }
+            return RedirectToAction("Edit");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(EditBlogPostRequest editBlogPostRequest)
+        {
+            var deletedBlog = await _blogPostService.DeleteAsync(editBlogPostRequest.Id);
+
+            if (deletedBlog != null)
+            {
+                return RedirectToAction("List");
+            }
+            return RedirectToAction("Edit", new { id = editBlogPostRequest.Id });
+        }
     }
 }

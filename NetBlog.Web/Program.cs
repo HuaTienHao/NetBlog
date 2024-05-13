@@ -12,6 +12,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IBlogPostService, BlogPostsService>();
+builder.Services.AddScoped<IImagesService, CloudinaryImagesService>();
 
 var app = builder.Build();
 
