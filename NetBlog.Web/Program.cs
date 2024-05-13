@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetBlog.Web.Data;
 using NetBlog.Web.Services;
@@ -6,8 +7,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddDbContext<NetBlogDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("NetBlogDbConnectionString")));
+
+builder.Services.AddDbContext<AuthDbContext>(
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("NetBlogAuthDbConnectionString")));
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AuthDbContext>();
+
+
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddScoped<ITagService, TagService>();
@@ -28,6 +37,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
