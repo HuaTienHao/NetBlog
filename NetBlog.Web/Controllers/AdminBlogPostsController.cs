@@ -4,9 +4,11 @@ using NetBlog.Web.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NetBlog.Web.Models.Domain;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NetBlog.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminBlogPostsController : Controller
     {
         private readonly ITagService _tagService;

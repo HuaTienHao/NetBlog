@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetBlog.Web.Data;
@@ -8,6 +9,7 @@ using NetBlog.Web.Services;
 
 namespace NetBlog.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminTagsController : Controller
     {
         private readonly ITagService _tagService;
@@ -19,6 +21,7 @@ namespace NetBlog.Web.Controllers
             _mapper = mapper;
         }
 
+        
         [HttpGet]
         public IActionResult Add()
         {

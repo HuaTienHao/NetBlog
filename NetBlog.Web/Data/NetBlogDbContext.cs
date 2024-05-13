@@ -5,7 +5,7 @@ namespace NetBlog.Web.Data
 {
     public class NetBlogDbContext : DbContext
     {
-        public NetBlogDbContext(DbContextOptions options) : base(options)
+        public NetBlogDbContext(DbContextOptions<NetBlogDbContext> options) : base(options)
         {
         }
 
