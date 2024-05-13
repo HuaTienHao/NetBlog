@@ -16,6 +16,15 @@ builder.Services.AddDbContext<AuthDbContext>(
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<AuthDbContext>();
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 5;
+    options.Password.RequiredUniqueChars = 1;
+});
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
