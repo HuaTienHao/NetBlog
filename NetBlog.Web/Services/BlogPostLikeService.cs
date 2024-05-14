@@ -21,6 +21,11 @@ namespace NetBlog.Web.Services
             return blogPostLike;
         }
 
+        public async Task<BlogPostLike?> GetLikeByBlogIdAndUserId(Guid blogPostId, Guid userId)
+        {
+            return await _netBlogDbContext.BlogPostLike.FirstOrDefaultAsync(x => x.BlogPostId == blogPostId && x.UserId == userId);
+        }
+
         public async Task<IEnumerable<BlogPostLike>> GetLikesForBlog(Guid blogPostId)
         {
             return await _netBlogDbContext.BlogPostLike.Where(x => x.BlogPostId == blogPostId).ToListAsync();
@@ -29,6 +34,20 @@ namespace NetBlog.Web.Services
         public async Task<int> GetTotalLikes(Guid blogPostId)
         {
             return await _netBlogDbContext.BlogPostLike.CountAsync(x => x.BlogPostId == blogPostId);
+        }
+
+        public async Task<BlogPostLike?> UnlikeForBlog(Guid blogPostLikeId)
+        {
+            var like = await _netBlogDbContext.BlogPostLike.FindAsync(blogPostLikeId);
+
+            if (like != null)
+            {
+                _netBlogDbContext.BlogPostLike.Remove(like);
+                await _netBlogDbContext.SaveChangesAsync();
+                return like;
+            }
+
+            return null;
         }
     }
 }
