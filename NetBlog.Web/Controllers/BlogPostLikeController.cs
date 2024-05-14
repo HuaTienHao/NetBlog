@@ -38,5 +38,18 @@ namespace NetBlog.Web.Controllers
 
             return Ok(totalLikes);
         }
+
+        [HttpPost]
+        [Route("Unlike")]
+        public async Task<IActionResult> Unlike([FromBody] UnlikeRequest unlikeRequest)
+        {
+            var blogPostLike = await _blogPostLikeService.GetLikeByBlogIdAndUserId(unlikeRequest.BlogPostId, unlikeRequest.UserId);
+            if (blogPostLike != null)
+            {
+                await _blogPostLikeService.UnlikeForBlog(blogPostLike.Id);
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }

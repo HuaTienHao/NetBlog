@@ -7,5 +7,7 @@ namespace NetBlog.Web.Services
         Task<int> GetTotalLikes(Guid blogPostId);
         Task<IEnumerable<BlogPostLike>> GetLikesForBlog(Guid blogPostId);
         Task<BlogPostLike> AddLikeForBlog(BlogPostLike blogPostLike);
+        Task<BlogPostLike?> UnlikeForBlog(Guid blogPostLikeId);
+        Task<BlogPostLike?> GetLikeByBlogIdAndUserId(Guid blogPostId, Guid userId);
     }
 }

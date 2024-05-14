@@ -25,7 +25,7 @@
                     {
                         @if (Model.Liked)
                         {
-                            <a style="cursor:pointer;">
+                            <a id="btnIsLiked" style="cursor:pointer;">
                                 <i class="bi bi-hand-thumbs-up-fill"></i>
                             </a>
                         }
@@ -107,6 +107,7 @@
     <script>
 
         const btnLikeElement = document.getElementById('btnLike');
+        const btnIsLikedElement = document.getElementById('btnIsLiked');
         const totalLikesElement = document.getElementById('totalLikes');
 
         async function getTotalLikes() {
@@ -133,13 +134,58 @@
                     userId: '@userManager.GetUserId(User)' 
                 })
             }).then(() => {
-                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
-                btnLikeElement.removeEventListener('click', addLikeForBlog);
-                getTotalLikes();
+                console.log("Like checked");
+
+                if (btnLikeElement != null) {
+                    btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
+                    btnLikeElement.removeEventListener('click', addLikeForBlog);
+                    btnLikeElement.addEventListener('click', unlikeForBlog);
+                    getTotalLikes();
+                }
+                else {
+                    btnIsLikedElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
+                    btnIsLikedElement.removeEventListener('click', addLikeForBlog);
+                    btnIsLikedElement.addEventListener('click', unlikeForBlog);
+                    getTotalLikes();
+                }
             });
         }
 
-        btnLikeElement.addEventListener('click', addLikeForBlog);
+        async function unlikeForBlog() {
+            fetch('/api/BlogPostLike/Unlike', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                },
+                body: JSON.stringify({
+                    blogPostId: '@Model.Id',
+                    userId: '@userManager.GetUserId(User)'
+                })
+            }).then(() => {
+                console.log("Unlike checked");
+
+                if (btnIsLikedElement != null) {
+                    btnIsLikedElement.innerHTML = '<i class="bi bi-hand-thumbs-up"></i>';
+                    btnIsLikedElement.removeEventListener('click', unlikeForBlog);
+                    btnIsLikedElement.addEventListener('click', addLikeForBlog);
+                    getTotalLikes();
+                }
+                else {
+                    btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up"></i>';
+                    btnLikeElement.removeEventListener('click', unlikeForBlog);
+                    btnLikeElement.addEventListener('click', addLikeForBlog);
+                    getTotalLikes();
+                }
+            });
+        }
+
+        if (btnLikeElement != null) {
+            btnLikeElement.addEventListener('click', addLikeForBlog);
+        }
+        if (btnIsLikedElement != null) {
+            btnIsLikedElement.addEventListener('click', unlikeForBlog);
+        }
 
     </script>
 }
