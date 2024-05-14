@@ -18,7 +18,7 @@ namespace NetBlog.Web
             CreateMap<BlogPost, EditBlogPostRequest>().ForMember(dest => dest.Tags, src => src.Ignore());
             CreateMap<EditBlogPostRequest, BlogPost>().ForMember(dest => dest.Tags, src => src.Ignore());
             CreateMap<BlogPost, BlogPost>();
-            CreateMap<BlogPost, BlogDetailViewModel>();
+            CreateMap<BlogPost, BlogDetailViewModel>().ForMember(dest => dest.Comments, src => src.Ignore());
 
             // BlogPostLike
             CreateMap<AddLikeRequest, BlogPostLike>();

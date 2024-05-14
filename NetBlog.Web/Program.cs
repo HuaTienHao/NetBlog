@@ -32,6 +32,8 @@ builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IBlogPostService, BlogPostsService>();
 builder.Services.AddScoped<IImagesService, CloudinaryImagesService>();
 builder.Services.AddScoped<IBlogPostLikeService, BlogPostLikeService>();
+builder.Services.AddScoped<IBlogPostCommentService, BlogPostCommentService>();
+
 
 var app = builder.Build();
 

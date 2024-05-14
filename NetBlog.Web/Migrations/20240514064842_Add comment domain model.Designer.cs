@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetBlog.Web.Data;
 
@@ -11,9 +12,11 @@ using NetBlog.Web.Data;
 namespace NetBlog.Web.Migrations
 {
     [DbContext(typeof(NetBlogDbContext))]
-    partial class NetBlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240514064842_Add comment domain model")]
+    partial class Addcommentdomainmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NetBlog.Web.Models.Domain;
 using NetBlog.Web.Models.ViewModels;
 using NetBlog.Web.Services;
 
@@ -10,6 +11,7 @@ namespace NetBlog.Web.Controllers
     {
         private readonly IBlogPostService _blogPostService;
         private readonly IBlogPostLikeService _blogPostLikeService;
+        private readonly IBlogPostCommentService _blogPostCommentService;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IMapper _mapper;
@@ -17,12 +19,14 @@ namespace NetBlog.Web.Controllers
         public BlogsController(
             IBlogPostService blogPostService, 
             IBlogPostLikeService blogPostLikeService, 
+            IBlogPostCommentService blogPostCommentService,
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
             IMapper mapper)
         {
             _blogPostService = blogPostService;
             _blogPostLikeService = blogPostLikeService;
+            _blogPostCommentService = blogPostCommentService;
             _signInManager = signInManager;
             _userManager = userManager;
             _mapper = mapper;
@@ -53,12 +57,49 @@ namespace NetBlog.Web.Controllers
                     }
                 }
 
+                // Get comments
+                var blogCommentsDomainModel = await _blogPostCommentService.GetCommentByBlogIdAsync(blogPost.Id);
+
+                var blogCommentsForView = new List<BlogComment>();
+
+                foreach (var blogComment in blogCommentsDomainModel)
+                {
+                    blogCommentsForView.Add(new BlogComment
+                    {
+                        Username = (await _userManager.FindByIdAsync(blogComment.UserId.ToString())).UserName,
+                        Description = blogComment.Description,
+                        DateAdded = blogComment.DateAdded
+                    });
+                }
+
+                // Mapping
                 blogPostDetailViewModel = _mapper.Map<BlogDetailViewModel>(blogPost);
                 blogPostDetailViewModel.TotalLikes = totalLikes;
                 blogPostDetailViewModel.Liked = liked;
+                blogPostDetailViewModel.Comments = blogCommentsForView;
             }
 
             return View(blogPostDetailViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(BlogDetailViewModel blogDetailViewModel)
+        {
+            if (_signInManager.IsSignedIn(User))
+            {
+                var domainModel = new BlogPostComment
+                {
+                    BlogPostId = blogDetailViewModel.Id,
+                    Description = blogDetailViewModel.CommentDescription,
+                    UserId = Guid.Parse(_userManager.GetUserId(User)),
+                    DateAdded = DateTime.Now
+                };
+
+                await _blogPostCommentService.AddAsync(domainModel);
+                return RedirectToAction("Index", "Blogs", new { urlHandle = blogDetailViewModel.UrlHandle });
+            }
+
+            return View();
         }
     }
 }
