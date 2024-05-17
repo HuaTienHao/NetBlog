@@ -6,7 +6,7 @@
 
 <div class="bg-black text-white bg-opacity-75">
     <div class="container col-xxl-8 px-4 py-5">
-        <div class="row align-items-center g-5 py-5">
+        <div class="row align-items-center   g-5 py-5">
             <div class="col-12 col-lg-6">
                 <h1 class="display-5 fw-bold lh-1 mb-3">
                     NetBlog - The Coding Blog
@@ -50,7 +50,7 @@
         {
             foreach (var blogPost in Model.BlogPosts)
             {
-                <div class="col-4 mb-3 bg-light box-shadow">
+                <div class="col-12 col-md-6 col-lg-4 mb-3 bg-light box-shadow">
                     <img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading" class="mb-2 d-block img-fluid" />
 
                     <h4 class="mb-2">

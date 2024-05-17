@@ -13,22 +13,26 @@
     <form method="post">
         <div class="mb-3">
             <label class="form-label">Heading</label>
-            <input type="text" class="form-control" id="heading" asp-for="Heading" />
+            <input type="text" class="form-control" id="heading" asp-for="Heading" required />
+            <span class="text-danger" asp-validation-for="Heading"></span>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" asp-for="Title" />
+            <input type="text" class="form-control" id="title" asp-for="Title" required />
+            <span class="text-danger" asp-validation-for="Title"></span>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Content</label>
-            <textarea class="form-control" id="content" asp-for="Content"></textarea>
+            <textarea class="form-control" id="content" asp-for="Content" required></textarea>
+            <span class="text-danger" asp-validation-for="Content"></span>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Short Description</label>
-            <input type="text" class="form-control" id="shortDescription" asp-for="ShortDescription" />
+            <input type="text" class="form-control" id="shortDescription" asp-for="ShortDescription" required />
+            <span class="text-danger" asp-validation-for="ShortDescription"></span>
         </div>
 
         <div class="mb-3">
@@ -39,12 +43,14 @@
 
         <div class="mb-3">
             <label class="form-label">Featured Image URL</label>
-            <input type="text" class="form-control" id="featuredImageUrl" asp-for="FeaturedImageUrl" />
+            <input type="text" class="form-control" id="featuredImageUrl" asp-for="FeaturedImageUrl" required />
+            <span class="text-danger" asp-validation-for="FeaturedImageUrl"></span>
         </div>
 
         <div class="mb-3">
             <label class="form-label">URL Handle</label>
-            <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" />
+            <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required />
+            <span class="text-danger" asp-validation-for="UrlHandle"></span>
         </div>
 
         <div class="mb-3">
@@ -54,7 +60,8 @@
 
         <div class="mb-3">
             <label class="form-label">Author</label>
-            <input type="text" class="form-control" id="author" asp-for="Author" />
+            <input type="text" class="form-control" id="author" asp-for="Author" required />
+            <span class="text-danger" asp-validation-for="Author"></span>
         </div>
 
         <div class="form-check mb-3">

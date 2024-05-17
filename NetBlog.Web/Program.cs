@@ -33,6 +33,7 @@ builder.Services.AddScoped<IBlogPostService, BlogPostsService>();
 builder.Services.AddScoped<IImagesService, CloudinaryImagesService>();
 builder.Services.AddScoped<IBlogPostLikeService, BlogPostLikeService>();
 builder.Services.AddScoped<IBlogPostCommentService, BlogPostCommentService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 var app = builder.Build();

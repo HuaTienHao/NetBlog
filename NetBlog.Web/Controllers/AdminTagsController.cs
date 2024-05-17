@@ -29,8 +29,12 @@ namespace NetBlog.Web.Controllers
         }
 
         [HttpPost]
+        [ActionName("Add")]
         public async Task<IActionResult> Add(AddTagRequest addTagRequest)
         {
+            if (!ModelState.IsValid)
+                return View();
+
             Tag tag = _mapper.Map<Tag>(addTagRequest);
             await _tagService.AddAsync(tag);
 
@@ -61,6 +65,9 @@ namespace NetBlog.Web.Controllers
         [HttpPost]
         public  async Task<IActionResult> Edit(EditTagRequest editTagRequest)
         {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Edit", new { id = editTagRequest.Id });
+
             Tag tag = _mapper.Map<Tag>(editTagRequest);
             var updatedTag = await _tagService.UpdateAsync(tag);
             if (updatedTag != null)
@@ -71,7 +78,7 @@ namespace NetBlog.Web.Controllers
             {
 
             }
-            return RedirectToAction("Edit", new { id = editTagRequest.Id });
+            return RedirectToAction("List");
         }
 
         [HttpPost]

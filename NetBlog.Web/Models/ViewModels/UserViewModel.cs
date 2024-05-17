@@ -2,8 +2,9 @@
 
 namespace NetBlog.Web.Models.ViewModels
 {
-    public class RegisterViewModel
+    public class UserViewModel
     {
+        public List<User> Users { get; set; } = new List<User>();
         [Required]
         public string Username { get; set; }
         [Required]
@@ -13,5 +14,6 @@ namespace NetBlog.Web.Models.ViewModels
         [MinLength(5)]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).+$", ErrorMessage = "Password must contain at least one uppercase letter, one number, and one special character.")]
         public string Password { get; set; }
+        public bool AdminRoleCheckBox { get; set; }
     }
 }

@@ -36,6 +36,9 @@ namespace NetBlog.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddBlogPostRequest addBlogPostRequest)
         {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Add");
+
             // Mapping
             BlogPost blogPost = _mapper.Map<BlogPost>(addBlogPostRequest);
             var selectedTags = new List<Tag>();
@@ -53,7 +56,7 @@ namespace NetBlog.Web.Controllers
             // Add to database
             await _blogPostService.AddAsync(blogPost);
 
-            return RedirectToAction("Add");
+            return RedirectToAction("List");
         }
 
         [HttpGet]
@@ -90,6 +93,9 @@ namespace NetBlog.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditBlogPostRequest editBlogPostRequest)
         {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Edit", new { id = editBlogPostRequest.Id });
+
             // Mapping
             var blogPostDomainModel = _mapper.Map<BlogPost>(editBlogPostRequest);
             var selectedTags = new List<Tag>();
@@ -110,9 +116,9 @@ namespace NetBlog.Web.Controllers
             var updatedBlog = await _blogPostService.UpdateAsync(blogPostDomainModel);
             if (updatedBlog != null)
             {
-                return RedirectToAction("Edit");
+                return RedirectToAction("List");
             }
-            return RedirectToAction("Edit");
+            return RedirectToAction("Edit", new { id = editBlogPostRequest.Id });
         }
 
         [HttpPost]
