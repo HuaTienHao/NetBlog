@@ -20,6 +20,7 @@ namespace NetBlog.Web.Models.ViewModels
         public string FeaturedImageUrl { get; set; }
         [Required]
         public string UrlHandle { get; set; }
+        [NotGreaterThanToday(ErrorMessage = "Date must not be greater than today.")]
         public DateTime PublishedDate { get; set; }
         [Required]
         public string Author { get; set; }

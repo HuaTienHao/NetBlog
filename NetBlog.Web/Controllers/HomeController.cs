@@ -19,9 +19,12 @@ namespace NetBlog.Web.Controllers
             _tagService = tagService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchQuery, string? searchByTag)
         {
-            var blogPosts = await _blogPostService.GetAllAsync();
+            ViewBag.SearchQuery = searchQuery;
+            ViewBag.SearchByTag = searchByTag;
+
+            var blogPosts = await _blogPostService.GetAllAsync(searchQuery, searchByTag);
             var tags = await _tagService.GetAllAsync();
             var model = new HomeViewModel
             {

@@ -33,18 +33,44 @@ namespace NetBlog.Web.Controllers
         public async Task<IActionResult> Add(AddTagRequest addTagRequest)
         {
             if (!ModelState.IsValid)
+            {
+                TempData["FailAlertMsg"] = "Failed To Add New Tag";
                 return View();
+            }
 
             Tag tag = _mapper.Map<Tag>(addTagRequest);
             await _tagService.AddAsync(tag);
+
+            TempData["SuccessAlertMsg"] = "Tag Added Successfully!";
 
             return RedirectToAction("List");
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(
+            string? searchQuery, 
+            string? sortBy, 
+            string? sortDirection,
+            int pageSize = 3,
+            int pageNumber = 1)
         {
-            var tags = await _tagService.GetAllAsync();
+            var totalRecords = await _tagService.CountAsync();
+            var totalPages = Math.Ceiling((decimal)totalRecords / pageSize);
+
+            if (pageNumber > totalPages)
+                pageNumber--;
+
+            if (pageNumber < 1)
+                pageNumber++;
+
+            ViewBag.TotalPages = totalPages;
+            ViewBag.SearchQuery = searchQuery;
+            ViewBag.SortBy = sortBy;
+            ViewBag.SortDirection = sortDirection;
+            ViewBag.PageSize = pageSize;
+            ViewBag.PageNumber = pageNumber;
+
+            var tags = await _tagService.GetAllAsync(searchQuery, sortBy, sortDirection, pageNumber, pageSize);
 
             return View(tags);
         }
@@ -66,19 +92,20 @@ namespace NetBlog.Web.Controllers
         public  async Task<IActionResult> Edit(EditTagRequest editTagRequest)
         {
             if (!ModelState.IsValid)
+            {
+                TempData["FailAlertMsg"] = "Failed To Edit Tag";
                 return RedirectToAction("Edit", new { id = editTagRequest.Id });
+            }
 
             Tag tag = _mapper.Map<Tag>(editTagRequest);
             var updatedTag = await _tagService.UpdateAsync(tag);
             if (updatedTag != null)
             {
-
+                TempData["SuccessAlertMsg"] = "Tag Edited Successfully!";
+                return RedirectToAction("List");
             }
-            else
-            {
-
-            }
-            return RedirectToAction("List");
+            TempData["FailAlertMsg"] = "Failed To Edit Tag";
+            return RedirectToAction("Edit", new { id = editTagRequest.Id });
         }
 
         [HttpPost]

@@ -34,9 +34,21 @@ namespace NetBlog.Web.Services
             return null;
         }
 
-        public async Task<IEnumerable<BlogPost>> GetAllAsync()
+        public async Task<IEnumerable<BlogPost>> GetAllAsync(string? searchQuery, string? searchByTag)
         {
-            return await _netBlogDbContext.BlogPosts.Include(x => x.Tags).ToListAsync();
+            var query = _netBlogDbContext.BlogPosts.Include(x => x.Tags).AsQueryable();
+
+            // Filtering
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                query = query.Where(x => x.Heading.Contains(searchQuery) || x.Title.Contains(searchQuery));
+            }
+            if (!string.IsNullOrWhiteSpace(searchByTag))
+            {
+                query = query.Where(x => x.Tags.Any(tag => tag.Name == searchByTag));
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<BlogPost?> GetAsync(Guid id)

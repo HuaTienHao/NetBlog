@@ -9,6 +9,17 @@
     </div>
 </div>
 
+@if (TempData["FailAlertMsg"] != null)
+{
+    <div class="container mt-3">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["FailAlertMsg"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert">
+            </button>
+        </div>
+    </div>
+}
+
 <div class="container py-5">
     @if (Model != null)
     {  
