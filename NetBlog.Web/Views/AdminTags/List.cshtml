@@ -7,14 +7,14 @@
 
 <div class="bg-secondary bg-opacity-10 py-2">
     <div class="container">
-        <h1>Show All Tag - Admin Functionality</h1>
+        <h1>Manage Tags - Admin Functionality</h1>
     </div>
 </div>
 
 
 <div class="container mt-3 text-center">
     <div class="row justify-content-between">
-        <div class="col col-md-4">
+        <div class="col-10 col-sm-10 col-md-8 col-lg-6">
             <form method="get" asp-controller="AdminTags" asp-action="List">
                 <div class="d-flex flex-row">
                     <input type="text" class="form-control" name="searchQuery" value="@ViewBag.SearchQuery" />
@@ -53,83 +53,86 @@
 <div class="container mt-3">
     @if (Model != null && Model.Any())
     {
-        <table class="table table-striped align-middle table-sm">
-            <thead class="table-dark">
-                <tr>
-                    <th>#</th>
-                    <th>
-                        Name
-                        <span>
-                            <span>
-                                <a class="btn-dark" 
-                                    asp-controller="AdminTags" 
-                                    asp-action="List" 
-                                    asp-route-sortBy="Name"
-                                    asp-route-sortDirection="Asc"
-                                    asp-route-searchQuery="@ViewBag.SearchQuery">
-                                    <i class="bi bi-arrow-up"></i>
-                                </a>
-                            </span>
-                            <span>
-                                <a class="btn-dark"
-                                   asp-controller="AdminTags"
-                                   asp-action="List"
-                                   asp-route-sortBy="Name"
-                                   asp-route-sortDirection="Desc" 
-                                   asp-route-searchQuery="@ViewBag.SearchQuery">
-                                    <i class="bi bi-arrow-down"></i>
-                                </a>
-                            </span>
-                        </span>
-                    </th>
-                    <th>
-                        Display Name
-                        <span>
-                            <span>
-                                <a class="btn-dark"
-                                   asp-controller="AdminTags"
-                                   asp-action="List"
-                                   asp-route-sortBy="DisplayName"
-                                   asp-route-sortDirection="Asc"
-                                   asp-route-searchQuery="@ViewBag.SearchQuery">
-                                    <i class="bi bi-arrow-up"></i>
-                                </a>
-                            </span>
-                            <span>
-                                <a class="btn-dark"
-                                   asp-controller="AdminTags"
-                                   asp-action="List"
-                                   asp-route-sortBy="DisplayName"
-                                   asp-route-sortDirection="Desc"
-                                   asp-route-searchQuery="@ViewBag.SearchQuery">
-                                    <i class="bi bi-arrow-down"></i>
-                                </a>
-                            </span>
-                        </span>
-                    </th>
-                    <th> </th>
-                </tr>
-            </thead>
-
-            <tbody class="table-light">
-                @foreach (var tag in Model)
-                {
+        <div class="table-responsive">
+            <table class="table table-striped align-middle table-sm">
+                <thead class="table-dark">
                     <tr>
-                        <td>@tagPosition</td>
-                        <td>@tag.Name</td>
-                        <td>@tag.DisplayName</td>
-                        <td>
-                            <a class="btn btn-success" asp-area="" 
-                                asp-controller="AdminTags"
-                                asp-action="Edit"
-                                asp-route-id="@tag.Id">Edit</a>
-                        </td>
+                        <th>#</th>
+                        <th>
+                            Name
+                            <span>
+                                <span>
+                                    <a class="btn-dark text-decoration-none" 
+                                        asp-controller="AdminTags" 
+                                        asp-action="List" 
+                                        asp-route-sortBy="Name"
+                                        asp-route-sortDirection="Asc"
+                                        asp-route-searchQuery="@ViewBag.SearchQuery">
+                                        <i class="bi bi-arrow-up"></i>
+                                    </a>
+                                </span>
+                                <span>
+                                    <a class="btn-dark text-decoration-none"
+                                       asp-controller="AdminTags"
+                                       asp-action="List"
+                                       asp-route-sortBy="Name"
+                                       asp-route-sortDirection="Desc" 
+                                       asp-route-searchQuery="@ViewBag.SearchQuery">
+                                        <i class="bi bi-arrow-down"></i>
+                                    </a>
+                                </span>
+                            </span>
+                        </th>
+                        <th>
+                            Display Name
+                            <span>
+                                <span>
+                                    <a class="btn-dark text-decoration-none"
+                                       asp-controller="AdminTags"
+                                       asp-action="List"
+                                       asp-route-sortBy="DisplayName"
+                                       asp-route-sortDirection="Asc"
+                                       asp-route-searchQuery="@ViewBag.SearchQuery">
+                                        <i class="bi bi-arrow-up"></i>
+                                    </a>
+                                </span>
+                                <span>
+                                    <a class="btn-dark text-decoration-none"
+                                       asp-controller="AdminTags"
+                                       asp-action="List"
+                                       asp-route-sortBy="DisplayName"
+                                       asp-route-sortDirection="Desc"
+                                       asp-route-searchQuery="@ViewBag.SearchQuery">
+                                        <i class="bi bi-arrow-down"></i>
+                                    </a>
+                                </span>
+                            </span>
+                        </th>
+                        <th> </th>
                     </tr>
+                </thead>
 
-                    tagPosition++;
-                }
-            </tbody>
-        </table>
+                <tbody class="table-light">
+                    @foreach (var tag in Model)
+                    {
+                        <tr>
+                            <td>@tagPosition</td>
+                            <td>@tag.Name</td>
+                            <td>@tag.DisplayName</td>
+                            <td>
+                                <a class="btn btn-success" asp-area="" 
+                                    asp-controller="AdminTags"
+                                    asp-action="Edit"
+                                    asp-route-id="@tag.Id">Edit</a>
+                            </td>
+                        </tr>
+
+                        tagPosition++;
+                    }
+                </tbody>
+            </table>
+
+        </div>
 
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">

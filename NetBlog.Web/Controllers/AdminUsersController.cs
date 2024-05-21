@@ -19,9 +19,30 @@ namespace NetBlog.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(
+            string? searchQuery,
+            string? sortBy,
+            string? sortDirection,
+            int pageSize = 5,
+            int pageNumber = 1)
         {
-            var users = await _userService.GetAll();
+            var totalRecords = await _userService.CountAsync();
+            var totalPages = Math.Ceiling((decimal)totalRecords / pageSize);
+
+            if (pageNumber > totalPages)
+                pageNumber--;
+
+            if (pageNumber < 1)
+                pageNumber++;
+
+            ViewBag.TotalPages = totalPages;
+            ViewBag.SearchQuery = searchQuery;
+            ViewBag.SortBy = sortBy;
+            ViewBag.SortDirection = sortDirection;
+            ViewBag.PageSize = pageSize;
+            ViewBag.PageNumber = pageNumber;
+
+            var users = await _userService.GetAll(searchQuery, sortBy, sortDirection, pageNumber, pageSize);
 
             var usersViewModel = new UserViewModel();
             usersViewModel.Users = new List<User>();
@@ -32,7 +53,8 @@ namespace NetBlog.Web.Controllers
                 {
                     Id = Guid.Parse(user.Id),
                     Username = user.UserName,
-                    EmailAddress = user.Email
+                    EmailAddress = user.Email,
+                    IsAdmin = (await _userManager.GetRolesAsync(user)).Any(r => r.Contains("Admin"))
                 });
             }
 
@@ -44,6 +66,7 @@ namespace NetBlog.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                TempData["FailAlertMsg"] = "Failed To Add New User";
                 return RedirectToAction("List");
             }
 
@@ -72,11 +95,13 @@ namespace NetBlog.Web.Controllers
 
                     if (identityResult is not null && identityResult.Succeeded)
                     {
+                        TempData["SuccessAlertMsg"] = "User Added Successfully";
                         return RedirectToAction("List");
                     }
                 }
             }
 
+            TempData["FailAlertMsg"] = "Failed To Add New User";
             return RedirectToAction("List");
         }
 
@@ -91,11 +116,13 @@ namespace NetBlog.Web.Controllers
 
                 if (identityResult is not null && identityResult.Succeeded)
                 {
-                    return RedirectToAction("List", "AdminUsers");
+                    TempData["SuccessAlertMsg"] = "User Deleted Successfully";
+                    return RedirectToAction("List");
                 }
             }
 
-            return View();
+            TempData["FailAlertMsg"] = "Failed To Deleted User";
+            return RedirectToAction("List");
         }
     }
 }
