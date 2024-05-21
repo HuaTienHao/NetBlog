@@ -51,7 +51,7 @@ namespace NetBlog.Web.Controllers
             string? searchQuery, 
             string? sortBy, 
             string? sortDirection,
-            int pageSize = 3,
+            int pageSize = 5,
             int pageNumber = 1)
         {
             var totalRecords = await _tagService.CountAsync();
