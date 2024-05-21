@@ -22,6 +22,11 @@ namespace NetBlog.Web.Services
             return blogPost;
         }
 
+        public async Task<int> CountAsync()
+        {
+            return await _netBlogDbContext.BlogPosts.CountAsync();
+        }
+
         public async Task<BlogPost?> DeleteAsync(Guid id)
         {
             var existingBlog = await _netBlogDbContext.BlogPosts.FindAsync(id);
@@ -34,7 +39,11 @@ namespace NetBlog.Web.Services
             return null;
         }
 
-        public async Task<IEnumerable<BlogPost>> GetAllAsync(string? searchQuery, string? searchByTag)
+        public async Task<IEnumerable<BlogPost>> GetAllAsync(
+            string? searchQuery, 
+            string? searchByTag,
+            int pageNumber = 1,
+            int pageSize = 100)
         {
             var query = _netBlogDbContext.BlogPosts.Include(x => x.Tags).AsQueryable();
 
@@ -47,6 +56,10 @@ namespace NetBlog.Web.Services
             {
                 query = query.Where(x => x.Tags.Any(tag => tag.Name == searchByTag));
             }
+
+            // Pagination
+            var skipResults = (pageNumber - 1) * pageSize;
+            query = query.Skip(skipResults).Take(pageSize);
 
             return await query.ToListAsync();
         }

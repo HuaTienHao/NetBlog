@@ -19,12 +19,27 @@ namespace NetBlog.Web.Controllers
             _tagService = tagService;
         }
 
-        public async Task<IActionResult> Index(string? searchQuery, string? searchByTag)
+        public async Task<IActionResult> Index(
+            string? searchQuery, 
+            string? searchByTag,
+            int pageSize = 6,
+            int pageNumber = 1)
         {
+            var totalRecords = await _blogPostService.CountAsync();
+            var totalPages = Math.Ceiling((decimal)totalRecords / pageSize);
+
+            if (pageNumber > totalPages)
+                pageNumber--;
+
+            if (pageNumber < 1)
+                pageNumber++;
+
+            ViewBag.TotalPages = totalPages;
+            ViewBag.PageNumber = pageNumber;
             ViewBag.SearchQuery = searchQuery;
             ViewBag.SearchByTag = searchByTag;
 
-            var blogPosts = await _blogPostService.GetAllAsync(searchQuery, searchByTag);
+            var blogPosts = await _blogPostService.GetAllAsync(searchQuery, searchByTag, pageNumber, pageSize);
             var tags = await _tagService.GetAllAsync();
             var model = new HomeViewModel
             {
