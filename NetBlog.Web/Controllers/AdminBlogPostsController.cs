@@ -80,6 +80,7 @@ namespace NetBlog.Web.Controllers
 
             ViewBag.TotalPages = totalPages;
             ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
             ViewBag.SearchQuery = searchQuery;
 
             var blogPosts = await _blogPostService.GetAllAsync(searchQuery, null, pageNumber, pageSize, false);

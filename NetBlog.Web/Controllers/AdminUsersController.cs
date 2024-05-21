@@ -22,13 +22,27 @@ namespace NetBlog.Web.Controllers
         public async Task<IActionResult> List(
             string? searchQuery,
             string? sortBy,
-            string? sortDirection)
+            string? sortDirection,
+            int pageSize = 5,
+            int pageNumber = 1)
         {
+            var totalRecords = await _userService.CountAsync();
+            var totalPages = Math.Ceiling((decimal)totalRecords / pageSize);
+
+            if (pageNumber > totalPages)
+                pageNumber--;
+
+            if (pageNumber < 1)
+                pageNumber++;
+
+            ViewBag.TotalPages = totalPages;
             ViewBag.SearchQuery = searchQuery;
             ViewBag.SortBy = sortBy;
             ViewBag.SortDirection = sortDirection;
+            ViewBag.PageSize = pageSize;
+            ViewBag.PageNumber = pageNumber;
 
-            var users = await _userService.GetAll(searchQuery, sortBy, sortDirection);
+            var users = await _userService.GetAll(searchQuery, sortBy, sortDirection, pageNumber, pageSize);
 
             var usersViewModel = new UserViewModel();
             usersViewModel.Users = new List<User>();

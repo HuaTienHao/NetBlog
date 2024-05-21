@@ -1,11 +1,14 @@
 ﻿@model NetBlog.Web.Models.ViewModels.UserViewModel
 
 @{
+    int nextPage = Convert.ToInt32(ViewBag.PageNumber) + 1;
+    int prevPage = Convert.ToInt32(ViewBag.PageNumber) - 1;
+    int userPosition = Convert.ToInt32(ViewBag.PageSize) * (Convert.ToInt32(ViewBag.PageNumber) - 1) + 1;
 }
 
 <div class="bg-secondary bg-opacity-10 py-2">
     <div class="container">
-        <h1>Users - Admin Functionality</h1>
+        <h1>Manage Users - Admin Functionality</h1>
     </div>
 </div>
 
@@ -100,7 +103,7 @@
                     @foreach (var user in Model.Users)
                     {
                         <tr>
-                            <td>@user.Id</td>
+                            <td>@userPosition</td>
                             <td>@user.Username</td>
                             <td>@user.EmailAddress</td>
                             <td class="text-center">
@@ -119,11 +122,54 @@
                                 </form>
                             </td>
                         </tr>
+
+                        userPosition++;
                     }
                 </tbody>
             </table>
         </div>
 
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-controller="AdminUsers"
+                       asp-action="List"
+                       asp-route-pageNumber="@prevPage"
+                       asp-route-pageSize="@ViewBag.PageSize"
+                       asp-route-sortBy="@ViewBag.SortBy"
+                       asp-route-sortDirection="@ViewBag.SortDirection">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-controller="AdminUsers"
+                           asp-action="List"
+                           asp-route-pageNumber="@i"
+                           asp-route-pageSize="@ViewBag.PageSize"
+                           asp-route-sortBy="@ViewBag.SortBy"
+                           asp-route-sortDirection="@ViewBag.SortDirection">@i</a>
+                    </li>
+
+                }
+
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-controller="AdminUsers"
+                       asp-action="List"
+                       asp-route-pageNumber="@nextPage"
+                       asp-route-pageSize="@ViewBag.PageSize"
+                       asp-route-sortBy="@ViewBag.SortBy"
+                       asp-route-sortDirection="@ViewBag.SortDirection">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     }
     else
     {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetBlog.Web.Data;
+using NetBlog.Web.Models.ViewModels;
 
 namespace NetBlog.Web.Services
 {
@@ -12,10 +13,18 @@ namespace NetBlog.Web.Services
         {
             _authDbContext = authDbContext;
         }
+
+        public async Task<int> CountAsync()
+        {
+            return await _authDbContext.Users.CountAsync(x => x.Id != "2fa891b8-665e-4592-85bb-b34b0b3bbf3a");
+        }
+
         public async Task<IEnumerable<IdentityUser>> GetAll(
             string? searchQuery,
             string? sortBy,
-            string? sortDirection)
+            string? sortDirection,
+            int pageNumber = 1,
+            int pageSize = 100)
         {
             var query = _authDbContext.Users.AsQueryable();
 
@@ -24,6 +33,11 @@ namespace NetBlog.Web.Services
             {
                 query = query.Where(x => x.UserName.Contains(searchQuery) ||
                                          x.Email.Contains(searchQuery));
+            }
+            var superAdminUser = await _authDbContext.Users.FirstOrDefaultAsync(x => x.Id == "2fa891b8-665e-4592-85bb-b34b0b3bbf3a");
+            if (superAdminUser is not null)
+            {
+                query = query.Where(x => x.Id != superAdminUser.Id);
             }
 
             // Sorting
@@ -42,13 +56,12 @@ namespace NetBlog.Web.Services
                 }
             }
 
-            var users = await query.ToListAsync();
-            var superAdminUser = await _authDbContext.Users.FirstOrDefaultAsync(x => x.Email == "superadmin@netblog.com");
+            // Pagination
+            var skipResults = (pageNumber - 1) * pageSize;
+            query = query.Skip(skipResults).Take(pageSize);
 
-            if (superAdminUser is not null)
-            {
-                users.Remove(superAdminUser);
-            }
+            var users = await query.ToListAsync();
+            
             return users;
         }
     }

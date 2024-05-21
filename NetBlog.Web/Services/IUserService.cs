@@ -7,6 +7,9 @@ namespace NetBlog.Web.Services
         Task<IEnumerable<IdentityUser>> GetAll(
             string? searchQuery = null,
             string? sortBy = null,
-            string? sortDirection = null);
+            string? sortDirection = null,
+            int pageNumber = 1,
+            int pageSize = 100);
+        Task<int> CountAsync();
     }
 }
