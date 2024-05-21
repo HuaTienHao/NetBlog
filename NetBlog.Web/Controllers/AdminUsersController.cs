@@ -66,6 +66,7 @@ namespace NetBlog.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                TempData["FailAlertMsg"] = "Failed To Add New User";
                 return RedirectToAction("List");
             }
 
@@ -94,11 +95,13 @@ namespace NetBlog.Web.Controllers
 
                     if (identityResult is not null && identityResult.Succeeded)
                     {
+                        TempData["SuccessAlertMsg"] = "User Added Successfully";
                         return RedirectToAction("List");
                     }
                 }
             }
 
+            TempData["FailAlertMsg"] = "Failed To Add New User";
             return RedirectToAction("List");
         }
 
@@ -113,11 +116,13 @@ namespace NetBlog.Web.Controllers
 
                 if (identityResult is not null && identityResult.Succeeded)
                 {
-                    return RedirectToAction("List", "AdminUsers");
+                    TempData["SuccessAlertMsg"] = "User Deleted Successfully";
+                    return RedirectToAction("List");
                 }
             }
 
-            return View();
+            TempData["FailAlertMsg"] = "Failed To Deleted User";
+            return RedirectToAction("List");
         }
     }
 }
