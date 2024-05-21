@@ -103,42 +103,42 @@
                         asp-route-urlHandle="@blogPost.UrlHandle">Read More</a>
                 </div>
             }
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-controller="Home"
+                           asp-action="Index"
+                           asp-route-pageNumber="@prevPage"
+                           asp-route-pageSize="@ViewBag.PageSize">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-controller="Home"
+                               asp-action="Index"
+                               asp-route-pageNumber="@i"
+                               asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                        </li>
+
+                    }
+
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-controller="Home"
+                           asp-action="Index"
+                           asp-route-pageNumber="@nextPage"
+                           asp-route-pageSize="@ViewBag.PageSize">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         }
     </div>
-
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link"
-                   asp-controller="Home"
-                   asp-action="Index"
-                   asp-route-pageNumber="@prevPage"
-                   asp-route-pageSize="@ViewBag.PageSize">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-
-            @for (int i = 1; i <= ViewBag.TotalPages; i++)
-            {
-                <li class="page-item">
-                    <a class="page-link"
-                       asp-controller="Home"
-                       asp-action="Index"
-                       asp-route-pageNumber="@i"
-                       asp-route-pageSize="@ViewBag.PageSize">@i</a>
-                </li>
-
-            }
-
-            <li class="page-item">
-                <a class="page-link"
-                   asp-controller="Home"
-                   asp-action="Index"
-                   asp-route-pageNumber="@nextPage"
-                   asp-route-pageSize="@ViewBag.PageSize">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
 </div>

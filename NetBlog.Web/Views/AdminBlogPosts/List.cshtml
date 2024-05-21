@@ -1,6 +1,8 @@
 ﻿@model List<NetBlog.Web.Models.Domain.BlogPost>
 
 @{
+    int nextPage = Convert.ToInt32(ViewBag.PageNumber) + 1;
+    int prevPage = Convert.ToInt32(ViewBag.PageNumber) - 1;
 }
 
 <div class="bg-secondary bg-opacity-10 py-2">
@@ -9,7 +11,44 @@
     </div>
 </div>
 
-<div class="container py-5">
+<div class="container mt-3 text-center">
+    <div class="row justify-content-between">
+        <div class="col col-md-4">
+            <form method="get" asp-controller="AdminBlogPosts" asp-action="List">
+                <div class="d-flex flex-row">
+                    <input type="text" class="form-control" name="searchQuery" value="@ViewBag.SearchQuery" />
+                    <button type="submit" class="btn btn-primary ms-2">
+                        <span><i class="bi bi-search"></i></span>
+                    </button>
+                    <a class="btn btn-secondary ms-2" asp-controller="AdminBlogPosts" asp-action="List">
+                        <span><i class="bi bi-arrow-clockwise"></i></span>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="col text-end">
+            <a class="btn btn-dark"
+               asp-area=""
+               asp-controller="AdminBlogPosts"
+               asp-action="Add"><span><i class="bi bi-plus-lg"></i></span></a>
+
+        </div>
+    </div>
+</div>
+
+@if (TempData["SuccessAlertMsg"] != null)
+{
+    <div class="container mt-3">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessAlertMsg"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert">
+            </button>
+        </div>
+    </div>
+}
+
+<div class="container mt-3">
     <div class="row d-flex flex-wrap">
         @if (Model != null && Model.Any())
         {
@@ -46,6 +85,42 @@
                        asp-route-id="@blogPost.Id">Edit</a>
                 </div>
             }
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-controller="AdminBlogPosts"
+                           asp-action="List"
+                           asp-route-pageNumber="@prevPage"
+                           asp-route-pageSize="@ViewBag.PageSize">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-controller="AdminBlogPosts"
+                               asp-action="List"
+                               asp-route-pageNumber="@i"
+                               asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                        </li>
+
+                    }
+
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-controller="AdminBlogPosts"
+                           asp-action="List"
+                           asp-route-pageNumber="@nextPage"
+                           asp-route-pageSize="@ViewBag.PageSize">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         }
         else
         {

@@ -8,12 +8,13 @@ namespace NetBlog.Web.Services
             string? searchQuery = null, 
             string? searchByTag = null,
             int pageNumber = 1,
-            int pageSize = 100);
+            int pageSize = 100,
+            bool onlyShowVisible = true);
         Task<BlogPost?> GetAsync(Guid id);
         Task<BlogPost> AddAsync(BlogPost blogPost);
         Task<BlogPost?> UpdateAsync(BlogPost blogPost);
         Task<BlogPost?> DeleteAsync(Guid id);
         Task<BlogPost?> GetByUrlHandelAsync(string urlHandle); 
-        Task<int> CountAsync();
+        Task<int> CountAsync(bool onlyShowVisible = true);
     }
 }

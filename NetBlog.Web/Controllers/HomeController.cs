@@ -25,7 +25,7 @@ namespace NetBlog.Web.Controllers
             int pageSize = 6,
             int pageNumber = 1)
         {
-            var totalRecords = await _blogPostService.CountAsync();
+            var totalRecords = await _blogPostService.CountAsync(true);
             var totalPages = Math.Ceiling((decimal)totalRecords / pageSize);
 
             if (pageNumber > totalPages)
@@ -39,7 +39,7 @@ namespace NetBlog.Web.Controllers
             ViewBag.SearchQuery = searchQuery;
             ViewBag.SearchByTag = searchByTag;
 
-            var blogPosts = await _blogPostService.GetAllAsync(searchQuery, searchByTag, pageNumber, pageSize);
+            var blogPosts = await _blogPostService.GetAllAsync(searchQuery, searchByTag, pageNumber, pageSize, true);
             var tags = await _tagService.GetAllAsync();
             var model = new HomeViewModel
             {

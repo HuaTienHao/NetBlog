@@ -114,10 +114,11 @@ namespace NetBlog.Web.Controllers
             var deletedTag = await _tagService.DeleteAsync(editTagRequest.Id);
             if (deletedTag != null)
             {
-
+                TempData["SuccessAlertMsg"] = "Tag Deleted Successfully!";
                 return RedirectToAction("List");
             }
 
+            TempData["FailAlertMsg"] = "Failed To Delete Tag";
             return RedirectToAction("Edit", new { id = editTagRequest.Id });
         }
     }

@@ -8,6 +8,17 @@
     </div>
 </div>
 
+@if (TempData["FailAlertMsg"] != null)
+{
+    <div class="container mt-3">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["FailAlertMsg"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert">
+            </button>
+        </div>
+    </div>
+}
+
 <div class="container py-5">
     @if (Model != null)
     {
@@ -71,6 +82,7 @@
             <div class="mb-3">
                 <label class="form-label">Published Date</label>
                 <input type="date" class="form-control" id="publishedDate" asp-for="PublishedDate" />
+                <span class="text-danger" asp-validation-for="PublishedDate"></span>
             </div>
 
             <div class="mb-3">

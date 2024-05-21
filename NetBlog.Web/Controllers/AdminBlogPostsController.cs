@@ -37,7 +37,10 @@ namespace NetBlog.Web.Controllers
         public async Task<IActionResult> Add(AddBlogPostRequest addBlogPostRequest)
         {
             if (!ModelState.IsValid)
+            {
+                TempData["FailAlertMsg"] = "Failed To Add New Blog Post";
                 return RedirectToAction("Add");
+            }
 
             // Mapping
             BlogPost blogPost = _mapper.Map<BlogPost>(addBlogPostRequest);
@@ -55,14 +58,31 @@ namespace NetBlog.Web.Controllers
 
             // Add to database
             await _blogPostService.AddAsync(blogPost);
+            TempData["SuccessAlertMsg"] = "Blog Post Added Successfully!";
 
             return RedirectToAction("List");
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(
+            string? searchQuery,
+            int pageSize = 6,
+            int pageNumber = 1)
         {
-            var blogPosts = await _blogPostService.GetAllAsync();
+            var totalRecords = await _blogPostService.CountAsync(false);
+            var totalPages = Math.Ceiling((decimal)totalRecords / pageSize);
+
+            if (pageNumber > totalPages)
+                pageNumber--;
+
+            if (pageNumber < 1)
+                pageNumber++;
+
+            ViewBag.TotalPages = totalPages;
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.SearchQuery = searchQuery;
+
+            var blogPosts = await _blogPostService.GetAllAsync(searchQuery, null, pageNumber, pageSize, false);
 
             return View(blogPosts);
         }
@@ -94,7 +114,10 @@ namespace NetBlog.Web.Controllers
         public async Task<IActionResult> Edit(EditBlogPostRequest editBlogPostRequest)
         {
             if (!ModelState.IsValid)
+            {
+                TempData["FailAlertMsg"] = "Failed To Edit Blog Post";
                 return RedirectToAction("Edit", new { id = editBlogPostRequest.Id });
+            }
 
             // Mapping
             var blogPostDomainModel = _mapper.Map<BlogPost>(editBlogPostRequest);
@@ -116,8 +139,10 @@ namespace NetBlog.Web.Controllers
             var updatedBlog = await _blogPostService.UpdateAsync(blogPostDomainModel);
             if (updatedBlog != null)
             {
+                TempData["SuccessAlertMsg"] = "Blog Post Edited Successfully!";
                 return RedirectToAction("List");
             }
+            TempData["FailAlertMsg"] = "Failed To Edit Blog Post";
             return RedirectToAction("Edit", new { id = editBlogPostRequest.Id });
         }
 
@@ -128,8 +153,10 @@ namespace NetBlog.Web.Controllers
 
             if (deletedBlog != null)
             {
+                TempData["SuccessAlertMsg"] = "Blog Post Deleted Successfully!";
                 return RedirectToAction("List");
             }
+            TempData["FailAlertMsg"] = "Failed To Delete Blog Post";
             return RedirectToAction("Edit", new { id = editBlogPostRequest.Id });
         }
     }

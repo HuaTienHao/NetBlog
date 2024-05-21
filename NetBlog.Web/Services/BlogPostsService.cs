@@ -22,8 +22,12 @@ namespace NetBlog.Web.Services
             return blogPost;
         }
 
-        public async Task<int> CountAsync()
+        public async Task<int> CountAsync(bool onlyShowVisible = true)
         {
+            if (onlyShowVisible)
+            {
+                return await _netBlogDbContext.BlogPosts.CountAsync(x => x.Visible == true);
+            }
             return await _netBlogDbContext.BlogPosts.CountAsync();
         }
 
@@ -43,7 +47,8 @@ namespace NetBlog.Web.Services
             string? searchQuery, 
             string? searchByTag,
             int pageNumber = 1,
-            int pageSize = 100)
+            int pageSize = 100,
+            bool onlyShowVisible = true)
         {
             var query = _netBlogDbContext.BlogPosts.Include(x => x.Tags).AsQueryable();
 
@@ -55,6 +60,10 @@ namespace NetBlog.Web.Services
             if (!string.IsNullOrWhiteSpace(searchByTag))
             {
                 query = query.Where(x => x.Tags.Any(tag => tag.Name == searchByTag));
+            }
+            if (onlyShowVisible)
+            {
+                query = query.Where(x => x.Visible == true);
             }
 
             // Pagination
