@@ -15,7 +15,7 @@
         {
             foreach (var blogPost in Model)
             {
-                <div class="col-12 col-md-6 col-lg-4 mb-3 bg-light box-shadow">
+                <div class="col-12 col-md-6 col-lg-4 mb-3 box-shadow">
                     <img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading" class="mb-2 d-block img-fluid" />
 
                     <h4 class="mb-2">
@@ -46,44 +46,6 @@
                        asp-route-id="@blogPost.Id">Edit</a>
                 </div>
             }
-
-            @* <table class="table">
-        <thead>
-        <tr>
-        <th>Id</th>
-        <th>Heading</th>
-        <th>Tags</th>
-        <th> </th>
-        </tr>
-        </thead>
-
-        <tbody>
-        @foreach (var blogPost in Model)
-        {
-        <tr>
-        <td>@blogPost.Id</td>
-        <td>@blogPost.Heading</td>
-        <td>
-        <div class="d-flex">
-        @foreach (var tag in blogPost.Tags)
-        {
-        <span class="badge bg-secondary me-1">@tag.Name</span>
-        }
-        </div>
-        </td>
-        <td>
-        <a
-        asp-area=""
-        asp-controller="AdminBlogPosts"
-        asp-action="Edit"
-        asp-route-id="@blogPost.Id">
-        Edit
-        </a>
-        </td>
-        </tr>
-        }
-        </tbody>
-        </table> *@
         }
         else
         {
