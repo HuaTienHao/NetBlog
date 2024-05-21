@@ -32,7 +32,8 @@ namespace NetBlog.Web.Controllers
                 {
                     Id = Guid.Parse(user.Id),
                     Username = user.UserName,
-                    EmailAddress = user.Email
+                    EmailAddress = user.Email,
+                    IsAdmin = (await _userManager.GetRolesAsync(user)).Any(r => r.Contains("Admin"))
                 });
             }
 

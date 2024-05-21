@@ -21,32 +21,46 @@
 
         @if (Model.Users is not null || Model.Users.Any())
         {
-            <table class="table table-striped align-middle table-sm">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th> </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach (var user in Model.Users)
-                    {
+            <div class="table-responsive">
+                <table class="table table-striped align-middle table-sm table-">
+                    <thead class="table-dark">
                         <tr>
-                            <td>@user.Id</td>
-                            <td>@user.Username</td>
-                            <td>@user.EmailAddress</td>
-                            <td>
-                                <form method="post" asp-controller="AdminUsers" asp-action="Delete" asp-route-id="@user.Id">
-                                    <button class="btn btn-danger" type="submit">Delete</button>
-                                </form>
-                            </td>
+                            <th>#</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th class="text-center">Admin</th>
+                            <th> </th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            <tr>
+                                <td>@user.Id</td>
+                                <td>@user.Username</td>
+                                <td>@user.EmailAddress</td>
+                                <td class="text-center">
+                                    @if (user.IsAdmin)
+                                    {
+                                        <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                                    }
+                                </td>
+                                <td>
+                                    <form method="post" asp-controller="AdminUsers" asp-action="Delete" asp-route-id="@user.Id">
+                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            
         }
         else
         {
