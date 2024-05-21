@@ -19,9 +19,16 @@ namespace NetBlog.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(
+            string? searchQuery,
+            string? sortBy,
+            string? sortDirection)
         {
-            var users = await _userService.GetAll();
+            ViewBag.SearchQuery = searchQuery;
+            ViewBag.SortBy = sortBy;
+            ViewBag.SortDirection = sortDirection;
+
+            var users = await _userService.GetAll(searchQuery, sortBy, sortDirection);
 
             var usersViewModel = new UserViewModel();
             usersViewModel.Users = new List<User>();
