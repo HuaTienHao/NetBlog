@@ -33,7 +33,10 @@ namespace NetBlog.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string urlHandle)
+        public async Task<IActionResult> Index(
+            string urlHandle, 
+            int pageSize = 5,
+            int pageNumber = 1)
         {
             var liked = false;
             var blogPost = await _blogPostService.GetByUrlHandelAsync(urlHandle);
@@ -58,7 +61,21 @@ namespace NetBlog.Web.Controllers
                 }
 
                 // Get comments
-                var blogCommentsDomainModel = await _blogPostCommentService.GetCommentByBlogIdAsync(blogPost.Id);
+                var totalRecords = await _blogPostCommentService.CountAsyncByBlogId(blogPost.Id);
+                var totalPages = Math.Ceiling((decimal)totalRecords / pageSize);
+
+                if (pageNumber > totalPages)
+                    pageNumber--;
+
+                if (pageNumber < 1)
+                    pageNumber++;
+
+                ViewBag.TotalPages = totalPages;
+                ViewBag.PageSize = pageSize;
+                ViewBag.PageNumber = pageNumber;
+                ViewBag.UrlHandle = blogPost.UrlHandle;
+
+                var blogCommentsDomainModel = await _blogPostCommentService.GetCommentByBlogIdAsync(blogPost.Id, pageNumber, pageSize);
 
                 var blogCommentsForView = new List<BlogComment>();
 
@@ -96,7 +113,7 @@ namespace NetBlog.Web.Controllers
                 };
 
                 await _blogPostCommentService.AddAsync(domainModel);
-                return RedirectToAction("Index", "Blogs", new { urlHandle = blogDetailViewModel.UrlHandle });
+                return RedirectToAction("Index", "Blogs", new { urlHandle = blogDetailViewModel.UrlHandle, pageSize = 5, pageNumber = 1 });
             }
 
             return View();

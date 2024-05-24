@@ -19,9 +19,23 @@ namespace NetBlog.Web.Services
             return blogPostComment;
         }
 
-        public async Task<IEnumerable<BlogPostComment>> GetCommentByBlogIdAsync(Guid blogPostId)
+        public Task<int> CountAsyncByBlogId(Guid blogPostId)
         {
-            return await _netBlogDbContext.BlogPostComment.Where(x => x.BlogPostId == blogPostId).ToListAsync();
+            return _netBlogDbContext.BlogPostComment.Where(x => x.BlogPostId == blogPostId).CountAsync();
+        }
+
+        public async Task<IEnumerable<BlogPostComment>> GetCommentByBlogIdAsync(
+            Guid blogPostId, 
+            int pageNumber = 1,
+            int pageSize = 100)
+        {
+            var query = _netBlogDbContext.BlogPostComment.Where(x => x.BlogPostId == blogPostId).OrderByDescending(x => x.DateAdded).AsQueryable();
+
+            //Pagination
+            var skipResults = (pageNumber - 1) * pageSize;
+            query = query.Skip(skipResults).Take(pageSize);
+
+            return await query.ToListAsync();
         }
     }
 }

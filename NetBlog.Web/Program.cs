@@ -35,6 +35,12 @@ builder.Services.AddScoped<IBlogPostLikeService, BlogPostLikeService>();
 builder.Services.AddScoped<IBlogPostCommentService, BlogPostCommentService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = "AspNetCore.Identity.Application";
+    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+    options.SlidingExpiration = true;
+});
 
 var app = builder.Build();
 

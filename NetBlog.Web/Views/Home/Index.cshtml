@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<div class="container mt-3 text-center">
+<div class="container mt-3 text-center" id="search">
     <div class="row p-2">
         <div class="col">
             <form method="get" asp-controller="Home" asp-action="Index">
@@ -142,3 +142,20 @@
         }
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var scrollpos = sessionStorage.getItem('homescrollpos');
+            sessionStorage.clear();
+            if (scrollpos) {
+                window.scrollTo(0, scrollpos);
+                sessionStorage.clear();
+            }
+        });
+
+        window.onbeforeunload = function (e) {
+            sessionStorage.setItem('homescrollpos', window.scrollY);
+        };
+    </script>
+}
