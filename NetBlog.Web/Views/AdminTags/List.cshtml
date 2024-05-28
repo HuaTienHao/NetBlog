@@ -1,4 +1,4 @@
-﻿@model List<NetBlog.Web.Models.Domain.Tag>
+﻿@model NetBlog.Web.Models.ViewModels.ModalTagRequests
 @{
     int nextPage = Convert.ToInt32(ViewBag.PageNumber) + 1;
     int prevPage = Convert.ToInt32(ViewBag.PageNumber) - 1;
@@ -29,10 +29,13 @@
         </div>
         
         <div class="col text-end">
-            <a class="btn btn-dark"
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalCreateTag">
+                <span><i class="bi bi-plus-lg"></i></span>
+            </button>
+            @* <a class="btn btn-dark"
                asp-area=""
                asp-controller="AdminTags"
-               asp-action="Add"><span><i class="bi bi-plus-lg"></i></span></a>
+               asp-action="Add"><span><i class="bi bi-plus-lg"></i></span></a> *@
            
         </div>   
     </div>
@@ -51,7 +54,7 @@
 }
 
 <div class="container mt-3">
-    @if (Model != null && Model.Any())
+    @if (Model.Tags != null && Model.Tags.Any())
     {
         <div class="table-responsive">
             <table class="table table-striped align-middle table-sm">
@@ -113,7 +116,7 @@
                 </thead>
 
                 <tbody class="table-light">
-                    @foreach (var tag in Model)
+                    @foreach (var tag in Model.Tags)
                     {
                         <tr>
                             <td>@tagPosition</td>
@@ -181,3 +184,34 @@
         <p>No tags found.</p>
     }
 </div>
+
+<!-- Modal -->
+<form method="post">
+    <div class="modal fade" id="modalCreateTag" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create New Tag</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" asp-for="AddTagRequest.Name" required />
+                        <span class="text-danger" asp-validation-for="AddTagRequest.Name"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Display Name</label>
+                        <input type="text" class="form-control" id="displayName" asp-for="AddTagRequest.DisplayName" required />
+                        <span class="text-danger" asp-validation-for="AddTagRequest.DisplayName"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
