@@ -73,34 +73,33 @@
             foreach (var blogPost in Model.BlogPosts)
             {
                 <div class="col-12 col-md-6 col-lg-4 mb-3 box-shadow">
-                    <img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading" class="mb-2 d-block img-fluid" />
+                    <a class="text-decoration-none text-dark" asp-area=""
+                       asp-controller="Blogs"
+                       asp-action="Index"
+                       asp-route-urlHandle="@blogPost.UrlHandle">
+                        <img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading" class="mb-2 d-block img-fluid" />
 
-                    <h4 class="mb-2">
-                        @blogPost.Heading
-                    </h4>
+                        <h4 class="mb-2">
+                            @blogPost.Heading
+                        </h4>
 
-                    <p class="mb-2">
-                        Author: @blogPost.Author
-                        <br />
-                        Published Date: @blogPost.PublishedDate.ToShortDateString()
-                    </p>
+                        <p class="mb-2">
+                            Author: @blogPost.Author
+                            <br />
+                            Published Date: @blogPost.PublishedDate.ToShortDateString()
+                        </p>
 
-                    <p class="mb-2">
-                        @foreach (var tag in blogPost.Tags)
-                        {
-                            <span class="badge bg-secondary me-1">@tag.Name</span>
-                        }
-                    </p>
+                        <p class="mb-2">
+                            @foreach (var tag in blogPost.Tags)
+                            {
+                                <span class="badge bg-secondary me-1">@tag.Name</span>
+                            }
+                        </p>
 
-                    <p class="mb-2 text-justify">
-                        @blogPost.ShortDescription
-                    </p>
-
-                    <a class="btn btn-dark" 
-                        asp-area="" 
-                        asp-controller="Blogs" 
-                        asp-action="Index"
-                        asp-route-urlHandle="@blogPost.UrlHandle">Read More</a>
+                        <p class="mb-2 text-justify">
+                            @blogPost.ShortDescription
+                        </p>
+                    </a>
                 </div>
             }
 
