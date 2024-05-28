@@ -22,7 +22,7 @@ namespace NetBlog.Web.Controllers
         }
 
         
-        [HttpGet]
+        /*[HttpGet]
         public IActionResult Add()
         {
             return View();
@@ -44,7 +44,7 @@ namespace NetBlog.Web.Controllers
             TempData["SuccessAlertMsg"] = "Tag Added Successfully!";
 
             return RedirectToAction("List");
-        }
+        }*/
 
         [HttpGet]
         public async Task<IActionResult> List(
@@ -72,7 +72,26 @@ namespace NetBlog.Web.Controllers
 
             var tags = await _tagService.GetAllAsync(searchQuery, sortBy, sortDirection, pageNumber, pageSize);
 
-            return View(tags);
+            var modalTagRequest = new ModalTagRequests { Tags = tags };
+
+            return View(modalTagRequest);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> List(ModalTagRequests addRequest)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["FailAlertMsg"] = "Failed To Add New Tag";
+                return RedirectToAction("List");
+            }
+
+            Tag tag = _mapper.Map<Tag>(addRequest.AddTagRequest);
+            await _tagService.AddAsync(tag);
+
+            TempData["SuccessAlertMsg"] = "Tag Added Successfully!";
+
+            return RedirectToAction("List");
         }
 
         [HttpGet]
