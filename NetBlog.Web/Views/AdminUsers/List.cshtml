@@ -153,43 +153,68 @@
 
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link"
-                       asp-controller="AdminUsers"
-                       asp-action="List"
-                       asp-route-pageNumber="@prevPage"
-                       asp-route-pageSize="@ViewBag.PageSize"
-                       asp-route-sortBy="@ViewBag.SortBy"
-                       asp-route-sortDirection="@ViewBag.SortDirection">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-
-                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                @if (ViewBag.PageNumber > 1)
                 {
                     <li class="page-item">
                         <a class="page-link"
                            asp-controller="AdminUsers"
                            asp-action="List"
-                           asp-route-pageNumber="@i"
+                           asp-route-pageNumber="@prevPage"
                            asp-route-pageSize="@ViewBag.PageSize"
                            asp-route-sortBy="@ViewBag.SortBy"
-                           asp-route-sortDirection="@ViewBag.SortDirection">@i</a>
+                           asp-route-sortDirection="@ViewBag.SortDirection">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>    
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
                     </li>
+                }
+
+                @{
+                    var currentPage = ViewBag.PageNumber;
+                    for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li @Html.Raw(currentPage == i ? "class=\"page-item active\"" : "class=\"page-item\"")>
+                            <a class="page-link"
+                               asp-controller="AdminUsers"
+                               asp-action="List"
+                               asp-route-pageNumber="@i"
+                               asp-route-pageSize="@ViewBag.PageSize"
+                               asp-route-sortBy="@ViewBag.SortBy"
+                               asp-route-sortDirection="@ViewBag.SortDirection">@i</a>
+                        </li>
+                    }
 
                 }
 
-                <li class="page-item">
-                    <a class="page-link"
-                       asp-controller="AdminUsers"
-                       asp-action="List"
-                       asp-route-pageNumber="@nextPage"
-                       asp-route-pageSize="@ViewBag.PageSize"
-                       asp-route-sortBy="@ViewBag.SortBy"
-                       asp-route-sortDirection="@ViewBag.SortDirection">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
+                @if (ViewBag.PageNumber < ViewBag.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-controller="AdminUsers"
+                           asp-action="List"
+                           asp-route-pageNumber="@nextPage"
+                           asp-route-pageSize="@ViewBag.PageSize"
+                           asp-route-sortBy="@ViewBag.SortBy"
+                           asp-route-sortDirection="@ViewBag.SortDirection">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
             </ul>
         </nav>
     }

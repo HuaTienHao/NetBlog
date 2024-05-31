@@ -65,9 +65,9 @@
                             Name
                             <span>
                                 <span>
-                                    <a class="btn-dark text-decoration-none" 
-                                        asp-controller="AdminTags" 
-                                        asp-action="List" 
+                                    <a class="btn-dark text-decoration-none"
+                                        asp-controller="AdminTags"
+                                        asp-action="List"
                                         asp-route-sortBy="Name"
                                         asp-route-sortDirection="Asc"
                                         asp-route-searchQuery="@ViewBag.SearchQuery">
@@ -79,7 +79,7 @@
                                        asp-controller="AdminTags"
                                        asp-action="List"
                                        asp-route-sortBy="Name"
-                                       asp-route-sortDirection="Desc" 
+                                       asp-route-sortDirection="Desc"
                                        asp-route-searchQuery="@ViewBag.SearchQuery">
                                         <i class="bi bi-arrow-down"></i>
                                     </a>
@@ -139,6 +139,8 @@
 
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
+                @if (ViewBag.PageNumber > 1)
+                {
                 <li class="page-item">
                     <a class="page-link"
                        asp-controller="AdminTags"
@@ -150,32 +152,55 @@
                         <span aria-hidden="true">&laquo;</span>
                    </a>
                 </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
 
-                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                @{
+                    var currentPage = ViewBag.PageNumber;
+                    for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li @Html.Raw(currentPage == i ? "class=\"page-item active\"" : "class=\"page-item\"")>
+                            <a class="page-link"
+                                asp-controller="AdminTags"
+                                asp-action="List"
+                                asp-route-pageNumber="@i"
+                                asp-route-pageSize="@ViewBag.PageSize"
+                                asp-route-sortBy="@ViewBag.SortBy"
+                                asp-route-sortDirection="@ViewBag.SortDirection">@i</a>
+                        </li>
+
+                    }
+                }
+
+                @if (ViewBag.PageNumber < ViewBag.TotalPages)
                 {
                     <li class="page-item">
                         <a class="page-link"
-                            asp-controller="AdminTags"
-                            asp-action="List"
-                            asp-route-pageNumber="@i"
-                            asp-route-pageSize="@ViewBag.PageSize"
-                            asp-route-sortBy="@ViewBag.SortBy"
-                            asp-route-sortDirection="@ViewBag.SortDirection">@i</a>
-                    </li>
-
+                           asp-controller="AdminTags"
+                           asp-action="List"
+                           asp-route-pageNumber="@nextPage"
+                           asp-route-pageSize="@ViewBag.PageSize"
+                           asp-route-sortBy="@ViewBag.SortBy"
+                           asp-route-sortDirection="@ViewBag.SortDirection">
+                            <span aria-hidden="true">&raquo;</span>
+                       </a>
+                    </li>  
                 }
-
-                <li class="page-item">
-                    <a class="page-link"
-                       asp-controller="AdminTags"
-                       asp-action="List"
-                       asp-route-pageNumber="@nextPage"
-                       asp-route-pageSize="@ViewBag.PageSize"
-                       asp-route-sortBy="@ViewBag.SortBy"
-                       asp-route-sortDirection="@ViewBag.SortDirection">
-                        <span aria-hidden="true">&raquo;</span>
-                   </a>
-                </li>
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
             </ul>
         </nav>
     }

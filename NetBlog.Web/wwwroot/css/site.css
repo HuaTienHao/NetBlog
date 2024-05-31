@@ -29,3 +29,14 @@ body {
     text-align: justify;
     text-justify: auto;
 }
+
+.pagination .page-link {
+    color: #373A40;
+}
+
+.pagination .page-item.active .page-link {
+    background: #373A40;
+    color: #FFF;
+    border: #000000;
+}
+

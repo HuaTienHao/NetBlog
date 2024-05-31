@@ -105,37 +105,62 @@
 
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link"
-                           asp-controller="Home"
-                           asp-action="Index"
-                           asp-route-pageNumber="@prevPage"
-                           asp-route-pageSize="@ViewBag.PageSize">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-
-                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    @if (ViewBag.PageNumber > 1)
                     {
                         <li class="page-item">
                             <a class="page-link"
                                asp-controller="Home"
                                asp-action="Index"
-                               asp-route-pageNumber="@i"
-                               asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                               asp-route-pageNumber="@prevPage"
+                               asp-route-pageSize="@ViewBag.PageSize">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
                         </li>
-
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
                     }
 
-                    <li class="page-item">
-                        <a class="page-link"
-                           asp-controller="Home"
-                           asp-action="Index"
-                           asp-route-pageNumber="@nextPage"
-                           asp-route-pageSize="@ViewBag.PageSize">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
+                    @{
+                        var currentPage = ViewBag.PageNumber;
+                        for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li @Html.Raw(currentPage == i ? "class=\"page-item active\"" : "class=\"page-item\"")>
+                                <a class="page-link"
+                                   asp-controller="Home"
+                                   asp-action="Index"
+                                   asp-route-pageNumber="@i"
+                                   asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                            </li>
+
+                        }
+                    }
+
+                    @if (ViewBag.PageNumber < ViewBag.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-controller="Home"
+                               asp-action="Index"
+                               asp-route-pageNumber="@nextPage"
+                               asp-route-pageSize="@ViewBag.PageSize">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    }
                 </ul>
             </nav>
         }
