@@ -70,7 +70,8 @@
                             Username
                             <span>
                                 <span>
-                                    <a class="btn-dark text-decoration-none"
+                                    <a class="btn-dark text-decoration-none
+                                       @Html.Raw((ViewBag.SortBy == "Username" && ViewBag.SortDirection == "Asc") ? "text-primary" : "")"
                                        asp-controller="AdminUsers"
                                        asp-action="List"
                                        asp-route-sortBy="Username"
@@ -80,7 +81,8 @@
                                     </a>
                                 </span>
                                 <span>
-                                    <a class="btn-dark text-decoration-none"
+                                    <a class="btn-dark text-decoration-none
+                                        @Html.Raw((ViewBag.SortBy == "Username" && ViewBag.SortDirection == "Desc") ? "text-primary" : "")"
                                        asp-controller="AdminUsers"
                                        asp-action="List"
                                        asp-route-sortBy="Username"
@@ -95,7 +97,8 @@
                             Email
                             <span>
                                 <span>
-                                    <a class="btn-dark text-decoration-none"
+                                    <a class="btn-dark text-decoration-none 
+                                        @Html.Raw((ViewBag.SortBy == "Email" && ViewBag.SortDirection == "Asc") ? "text-primary" : "")"
                                        asp-controller="AdminUsers"
                                        asp-action="List"
                                        asp-route-sortBy="Email"
@@ -105,7 +108,8 @@
                                     </a>
                                 </span>
                                 <span>
-                                    <a class="btn-dark text-decoration-none"
+                                    <a class="btn-dark text-decoration-none 
+                                        @Html.Raw((ViewBag.SortBy == "Email" && ViewBag.SortDirection == "Desc") ? "text-primary" : "")"
                                        asp-controller="AdminUsers"
                                        asp-action="List"
                                        asp-route-sortBy="Email"

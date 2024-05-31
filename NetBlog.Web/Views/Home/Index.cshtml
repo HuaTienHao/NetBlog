@@ -8,7 +8,7 @@
 
 <div class="bg-black text-white bg-opacity-75">
     <div class="container col-xxl-8 px-4 py-5">
-        <div class="row align-items-center   g-5 py-5">
+        <div class="row align-items-center g-5 py-5">
             <div class="col col-lg-6 col-md-6">
                 <h1 class="display-5 fw-bold lh-1 mb-3">
                     NetBlog - The Coding Blog
@@ -53,13 +53,12 @@
             {
                 foreach (var tag in Model.Tags)
                 {
-                    <a class="badge bg-dark me-1 text-decoration-none"
+                    <a class="@Html.Raw(ViewBag.SearchByTag == tag.Name ? "bg-primary" : "bg-dark") badge me-1 text-decoration-none"
                        asp-controller="Home"
                        asp-action="Index"
                        asp-route-searchByTag="@tag.Name">
                         @tag.Name
                     </a>
-                    
                 }
             }
         </div>
