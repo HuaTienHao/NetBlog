@@ -106,8 +106,10 @@
             <div class="mb-3 d-flex">
                 <button type="submit" class="btn btn-dark form-control">Update</button>
 
-                <button type="submit" class="btn btn-danger form-control ms-2" 
-                    asp-area="" asp-controller="AdminBlogPosts" asp-action="Delete">Delete</button>
+                <button type="button" class="btn btn-danger form-control ms-2"
+                        data-bs-toggle="modal" data-bs-target="#modalDeleteBlogPost">
+                    Delete
+                </button>
             </div>
         </form>
     }
@@ -116,6 +118,35 @@
         <p>No Blog Post Found</p>
     }
 </div>
+
+<form method="post">
+    <div class="modal fade" id="modalDeleteBlogPost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Delete "@Model.Heading" Blog Post</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="id" asp-for="Id" hidden readonly />
+
+                    <div class="mb-3">
+                        <p>Are you sure you want to delete "@Model.Heading" Blog Post?</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger"
+                            asp-area=""
+                            asp-controller="AdminBlogPosts"
+                            asp-action="Delete">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 @section Scripts {
     <script>

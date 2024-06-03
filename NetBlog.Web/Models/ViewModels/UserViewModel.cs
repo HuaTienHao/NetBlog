@@ -15,5 +15,6 @@ namespace NetBlog.Web.Models.ViewModels
         [RegularExpression(@"^(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).+$", ErrorMessage = "Password must contain at least one uppercase letter, one number, and one special character.")]
         public string Password { get; set; }
         public bool AdminRoleCheckBox { get; set; }
+        public Guid DeleteUserId { get; set; } = Guid.Empty;
     }
 }
