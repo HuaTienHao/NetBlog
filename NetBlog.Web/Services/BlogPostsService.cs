@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NetBlog.Web.Data;
 using NetBlog.Web.Models.Domain;
+using NetBlog.Web.Services.Interfaces;
 
 namespace NetBlog.Web.Services
 {
@@ -46,6 +47,7 @@ namespace NetBlog.Web.Services
         public async Task<IEnumerable<BlogPost>> GetAllAsync(
             string? searchQuery, 
             string? searchByTag,
+            string? sortDirection,
             int pageNumber = 1,
             int pageSize = 100,
             bool onlyShowVisible = true)
@@ -64,6 +66,18 @@ namespace NetBlog.Web.Services
             if (onlyShowVisible)
             {
                 query = query.Where(x => x.Visible == true);
+            }
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(sortDirection))
+            {
+                var isDesc = string.Equals(sortDirection, "Desc", StringComparison.OrdinalIgnoreCase);
+
+                query = isDesc ? query.OrderByDescending(x => x.Heading) : query.OrderBy(x => x.Heading);
+            }
+            else
+            {
+                query = query.OrderByDescending(x => x.PublishedDate);
             }
 
             // Pagination

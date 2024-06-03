@@ -48,12 +48,12 @@
     </div>
 
     <div class="row p-2">
-        <div class="col d-flex">
+        <div class="col-9 d-flex flex-wrap">
             @if (Model != null && Model.Tags.Any())
             {
                 foreach (var tag in Model.Tags)
                 {
-                    <a class="@Html.Raw(ViewBag.SearchByTag == tag.Name ? "bg-primary" : "bg-dark") badge me-1 text-decoration-none"
+                    <a class="@Html.Raw(ViewBag.SearchByTag == tag.Name ? "bg-primary" : "bg-dark") badge me-1 mt-1 text-decoration-none"
                        asp-controller="Home"
                        asp-action="Index"
                        asp-route-searchByTag="@tag.Name">
@@ -61,6 +61,28 @@
                     </a>
                 }
             }
+        </div>
+
+        <div class="col text-end">
+            <a class="badge me-1 mt-1 text-decoration-none
+                @Html.Raw((ViewBag.SortDirection == "Asc") ? "bg-primary" : "bg-dark")"
+               asp-controller="Home"
+               asp-action="Index"
+               asp-route-sortDirection="Asc"
+               asp-route-searchQuery="@ViewBag.SearchQuery" 
+               asp-route-searchByTag="@ViewBag.SearchByTag">
+                A-Z
+            </a>
+
+            <a class="badge me-1 mt-1 text-decoration-none
+                @Html.Raw((ViewBag.SortDirection == "Desc") ? "bg-primary" : "bg-dark")"
+               asp-controller="Home"
+               asp-action="Index"
+               asp-route-sortDirection="Desc"
+               asp-route-searchQuery="@ViewBag.SearchQuery"
+               asp-route-searchByTag="@ViewBag.SearchByTag">
+                Z-A
+            </a>
         </div>
     </div>
 </div>

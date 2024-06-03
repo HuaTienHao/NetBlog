@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetBlog.Web.Data;
 using NetBlog.Web.Services;
+using NetBlog.Web.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

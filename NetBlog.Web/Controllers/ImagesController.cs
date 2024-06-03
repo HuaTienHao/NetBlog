@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NetBlog.Web.Services;
+using NetBlog.Web.Services.Interfaces;
 using System.Net;
 
 namespace NetBlog.Web.Controllers

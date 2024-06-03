@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetBlog.Web.Models.ViewModels;
-using NetBlog.Web.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NetBlog.Web.Models.Domain;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using NetBlog.Web.Services.Interfaces;
 
 namespace NetBlog.Web.Controllers
 {
@@ -83,7 +83,7 @@ namespace NetBlog.Web.Controllers
             ViewBag.PageSize = pageSize;
             ViewBag.SearchQuery = searchQuery;
 
-            var blogPosts = await _blogPostService.GetAllAsync(searchQuery, null, pageNumber, pageSize, false);
+            var blogPosts = await _blogPostService.GetAllAsync(searchQuery, null, null, pageNumber, pageSize, false);
 
             return View(blogPosts);
         }

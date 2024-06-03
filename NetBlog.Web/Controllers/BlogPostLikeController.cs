@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetBlog.Web.Models.Domain;
 using NetBlog.Web.Models.ViewModels;
-using NetBlog.Web.Services;
+using NetBlog.Web.Services.Interfaces;
 
 namespace NetBlog.Web.Controllers
 {

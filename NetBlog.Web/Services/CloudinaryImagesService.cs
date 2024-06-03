@@ -1,6 +1,7 @@
 ﻿
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using NetBlog.Web.Services.Interfaces;
 
 namespace NetBlog.Web.Services
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NetBlog.Web.Models;
 using NetBlog.Web.Models.ViewModels;
-using NetBlog.Web.Services;
+using NetBlog.Web.Services.Interfaces;
 using System.Diagnostics;
 
 namespace NetBlog.Web.Controllers
@@ -22,6 +22,7 @@ namespace NetBlog.Web.Controllers
         public async Task<IActionResult> Index(
             string? searchQuery, 
             string? searchByTag,
+            string? sortDirection,
             int pageSize = 6,
             int pageNumber = 1)
         {
@@ -35,11 +36,13 @@ namespace NetBlog.Web.Controllers
                 pageNumber++;
 
             ViewBag.TotalPages = totalPages;
+            ViewBag.PageSize = pageSize;
             ViewBag.PageNumber = pageNumber;
             ViewBag.SearchQuery = searchQuery;
             ViewBag.SearchByTag = searchByTag;
+            ViewBag.SortDirection = sortDirection;
 
-            var blogPosts = await _blogPostService.GetAllAsync(searchQuery, searchByTag, pageNumber, pageSize, true);
+            var blogPosts = await _blogPostService.GetAllAsync(searchQuery, searchByTag, sortDirection,pageNumber, pageSize, true);
             var tags = await _tagService.GetAllAsync();
             var model = new HomeViewModel
             {

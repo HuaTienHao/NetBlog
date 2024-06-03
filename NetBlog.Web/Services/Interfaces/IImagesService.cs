@@ -1,4 +1,4 @@
-﻿namespace NetBlog.Web.Services
+﻿namespace NetBlog.Web.Services.Interfaces
 {
     public interface IImagesService
     {

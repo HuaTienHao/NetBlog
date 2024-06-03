@@ -1,6 +1,6 @@
 ﻿using NetBlog.Web.Models.Domain;
 
-namespace NetBlog.Web.Services
+namespace NetBlog.Web.Services.Interfaces
 {
     public interface IBlogPostLikeService
     {

@@ -1,7 +1,7 @@
 ﻿using NetBlog.Web.Models.Domain;
 using NetBlog.Web.Models.ViewModels;
 
-namespace NetBlog.Web.Services
+namespace NetBlog.Web.Services.Interfaces
 {
     public interface ITagService
     {

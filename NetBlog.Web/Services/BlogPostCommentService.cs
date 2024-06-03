@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NetBlog.Web.Data;
 using NetBlog.Web.Models.Domain;
+using NetBlog.Web.Services.Interfaces;
 
 namespace NetBlog.Web.Services
 {
