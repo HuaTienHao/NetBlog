@@ -55,34 +55,38 @@
             foreach (var blogPost in Model)
             {
                 <div class="col-12 col-md-6 col-lg-4 mb-3 box-shadow">
-                    <img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading" class="mb-2 d-block img-fluid" />
+                    <div class="card bg-light">
+                        <img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading" class="card-img-top img-fluid cover-image" style="height: 30vh; max-width: 100%" />
 
-                    <h4 class="mb-2">
-                        @blogPost.Heading
-                    </h4>
+                        <div class="card-body">
+                            <h4 class="card-title max-lines-2">
+                                @blogPost.Heading
+                            </h4>
 
-                    <p class="mb-2">
-                        Author: @blogPost.Author
-                        <br />
-                        Published Date: @blogPost.PublishedDate.ToShortDateString()
-                    </p>
+                            <p class="mb-2">
+                                Author: @blogPost.Author
+                                <br />
+                                Published Date: @blogPost.PublishedDate.ToShortDateString()
+                            </p>
 
-                    <p class="mb-2">
-                        @foreach (var tag in blogPost.Tags)
-                        {
-                            <span class="badge bg-secondary me-1">@tag.Name</span>
-                        }
-                    </p>
+                            <p class="mb-2">
+                                @foreach (var tag in blogPost.Tags)
+                                {
+                                    <span class="badge bg-secondary me-1">@tag.Name</span>
+                                }
+                            </p>
 
-                    <p class="mb-2 text-justify">
-                        @blogPost.ShortDescription
-                    </p>
+                            <p class="mb-2 text-justify card-text max-lines-4">
+                                @blogPost.ShortDescription
+                            </p>
 
-                    <a class="btn btn-success form-control"
-                       asp-area=""
-                       asp-controller="AdminBlogPosts"
-                       asp-action="Edit"
-                       asp-route-id="@blogPost.Id">Edit</a>
+                            <a class="btn btn-success form-control"
+                               asp-area=""
+                               asp-controller="AdminBlogPosts"
+                               asp-action="Edit"
+                               asp-route-id="@blogPost.Id">Edit</a>
+                        </div>
+                    </div>
                 </div>
             }
 

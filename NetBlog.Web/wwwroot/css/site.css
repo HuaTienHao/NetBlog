@@ -32,6 +32,10 @@ body {
     text-justify: auto;
 }
 
+.cover-image {
+    object-fit: cover;
+}
+
 .pagination .page-link {
     color: #373A40;
 }
@@ -42,3 +46,22 @@ body {
     border: #000000;
 }
 
+.max-lines-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    line-height: 1.2; /* fallback */
+    height: 2lh;
+}
+
+.max-lines-4 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4; /* number of lines to show */
+    line-height: 1.2; /* fallback */
+    height: 4lh;
+}
