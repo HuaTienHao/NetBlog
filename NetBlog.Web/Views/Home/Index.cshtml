@@ -35,7 +35,7 @@
         <div class="col">
             <form method="get" asp-controller="Home" asp-action="Index">
                 <div class="d-flex flex-row">
-                    <input type="text" class="form-control" name="searchQuery" value="@ViewBag.SearchQuery" />
+                    <input type="text" class="form-control" name="searchQuery" autocomplete="off" value="@ViewBag.SearchQuery" />
                     <button type="submit" class="btn btn-primary ms-2">
                         <span><i class="bi bi-search"></i></span>
                     </button>
